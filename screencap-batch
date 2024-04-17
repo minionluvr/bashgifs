@@ -28,7 +28,7 @@ for file in "${1}"/*; do
     ((++i))
     batch_dir=batch${i}/
     if [ ! -d ${batch_dir} ]; then
-        echo "creating dir ${batch_file}"
+        echo "creating dir ${batch_dir}"
         mkdir ${batch_dir}
     fi
     ffmpeg -i "${file}" -r "${fps}" -f image2 ./${batch_dir}frame_%6d.png
