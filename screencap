@@ -1,3 +1,29 @@
 #!/bin/bash
 
+#this script will screencap a portion of the video according to $1 param
+#$ ./screencap trim <input> <start time> <end time> <fps>
+#or
+#$ ./screencap <input> <fps>
+#or
+#$ ./screencap <input>
 
+if [ ! -f "${1}" ]; then
+    echo "input file does not exist"
+    exit 1
+fi
+
+#if there is no second param
+if [ -z "${2}" ] ; then
+    echo "using default settings"
+    echo "screencapping ENTIRE input file at 30fps"
+
+    ffmpeg -i ${input} -r 30 -f image2 frame_%04d.png
+elif [ "${2}" == "trim" ]; then
+    echo "trimming video and screencapping"
+    #TO-DO add command with timestamps
+else #if the second param is not "trim"
+    fps=${2}
+    echo "screencapping ENTIRE input file at ${2} fps"
+
+    ffmpeg -i ${input} -r ${fps} -f image2 frame_%06d.png
+fi

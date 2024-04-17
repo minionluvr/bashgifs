@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#$ ./screencap-batch <path/to/clips> <fps>
+echo "first param: ${1}"
+echo "second param: ${2}"
+
+if [ ! -d "${1}" ]; then
+    echo "directory does not exist"
+    echo "usage: $ ./screencap-batch <path/to/clips> <fps>"
+    exit 1
+fi
+
+re="^[0-9]+$"
+if [ -z "${2}" ]; then
+    fps="30"
+    echo "screencapping at ${fps}fps"
+elif [[ ${2} =~ ${re} ]]; then
+    fps="${2}"
+    echo "screencapping at ${fps}fps"
+else
+    echo "not a number"
+    exit 1
+fi
+
+i=0
+for file in "${1}"/*; do
+    echo "screencapping file "${file}""
+    ((++i))
+    batch_dir=batch${i}/
+    if [ ! -d ${batch_dir} ]; then
+        echo "creating dir ${batch_file}"
+        mkdir ${batch_dir}
+    fi
+    ffmpeg -i "${file}" -r "${fps}" -f image2 ./${batch_dir}frame_%6d.png
+done
