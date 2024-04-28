@@ -33,3 +33,4 @@ for file in "${1}"/*; do
     fi
     ffmpeg -i "${file}" -r "${fps}" -f image2 ./${batch_dir}frame_%6d.png
 done
+

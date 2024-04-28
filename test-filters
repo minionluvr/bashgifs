@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#$ ./test-filters <screencap batch dir> <fps>
+#$ ./test-filters <screencap batch dir> <fps> <start_number>
 screencap_dir=$1/
 fps=$2
+start_number=$3
 
 crop=$(cat "./crop.json")
 
@@ -16,5 +17,5 @@ echo "height: $h"
 echo "x: $x"
 echo "y: $y"
 
-ffmpeg -i ${screencap_dir}frame_%06d.png -vf "fps=$fps" test.gif
+ffmpeg -start_number ${start_number} -i ${screencap_dir}frame_%06d.png -vf "fps=$fps" test.gif
 ffplay -vf "crop=$w:$h:$x:$y" -loop 0 test.gif 
